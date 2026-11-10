@@ -1,0 +1,4 @@
+# Cordis Framework Patch Declaration for @liuhange/dsh-mcp-lazy
+- insert:
+    - id: "@liuhange/dsh-mcp-lazy"
+      name: "@liuhange/dsh-mcp-lazy"
