@@ -22,7 +22,7 @@ export interface GateDeps {
 }
 
 /** 被拦截时的提示：必须指名道姓，并告诉模型下一步怎么做。 */
-export function blockedReason(toolName: string, agent: DshAgent | undefined): string | undefined {
+export function blockedReason(toolName: string, agent: DshAgent | undefined): string {
   if (!agent) {
     return `MCP tool "${toolName}" can only run inside an agent session: dsh-mcp-lazy tracks lazy loading per session and cannot verify activation for this call.`
   }
@@ -40,7 +40,7 @@ export function decide(
   if (!isMcpToolName(name)) return { kind: 'allow' }
   if (deps.coreTools.has(name)) return { kind: 'allow' }
   if (exec.agent && deps.sessions.isActive(exec.agent, name)) return { kind: 'allow' }
-  return { kind: 'deny', reason: blockedReason(name, exec.agent) ?? '' }
+  return { kind: 'deny', reason: blockedReason(name, exec.agent) }
 }
 
 /** 生成可以直接挂到 `ctx.on('tools/pre-execute')` 的监听器。 */

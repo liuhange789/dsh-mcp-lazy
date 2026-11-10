@@ -22,7 +22,7 @@ import { createPreExecuteListener } from './gate.ts'
 import { createHiddenToolsSection } from './prompt/hiddenToolsSection.ts'
 import { SessionStateStore } from './sessionState.ts'
 import { createLazyLoadTool } from './tool/lazyLoadTool.ts'
-import type { DshAgent, DshPreToolDecision, DshToolExecution, DshHostContext } from './types/dsh.ts'
+import type { DshAgent, DshHostContext } from './types/dsh.ts'
 import { createLog } from './types/dsh.ts'
 import { ToolVisibilityController } from './visibility.ts'
 
@@ -77,10 +77,8 @@ export async function apply(ctx: DshHostContext, pluginConfig?: unknown): Promis
   const visibility = new ToolVisibilityController({ tools, coreTools, sessions, log })
 
   // 1) 闸门：未加载的 MCP 工具调用直接拒绝，并给出下一步指令。
-  ctx.on('tools/pre-execute', ((exec: DshToolExecution, next: () => Promise<DshPreToolDecision>) => {
-    const listener = createPreExecuteListener({ enabled: true, coreTools, sessions }, log)
-    return listener(exec, next)
-  }) as (...args: unknown[]) => unknown)
+  const preExecute = createPreExecuteListener({ enabled: true, coreTools, sessions }, log)
+  ctx.on('tools/pre-execute', preExecute as (...args: unknown[]) => unknown)
 
   // 2) 会话开始就定一次型，避免第一个请求多带一整轮定义。
   ctx.on('agent/session-start', ((payload: SessionStartPayload) => {

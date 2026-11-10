@@ -18,7 +18,7 @@ export interface GateDeps {
     sessions: SessionStateStore;
 }
 /** 被拦截时的提示：必须指名道姓，并告诉模型下一步怎么做。 */
-export declare function blockedReason(toolName: string, agent: DshAgent | undefined): string | undefined;
+export declare function blockedReason(toolName: string, agent: DshAgent | undefined): string;
 /** 纯判定函数，方便单测直接覆盖，不依赖事件系统。 */
 export declare function decide(exec: Pick<DshToolExecution, 'name' | 'agent'>, deps: GateDeps): DshPreToolDecision;
 /** 生成可以直接挂到 `ctx.on('tools/pre-execute')` 的监听器。 */

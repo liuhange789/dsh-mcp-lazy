@@ -30,7 +30,7 @@ export function decide(exec, deps) {
         return { kind: 'allow' };
     if (exec.agent && deps.sessions.isActive(exec.agent, name))
         return { kind: 'allow' };
-    return { kind: 'deny', reason: blockedReason(name, exec.agent) ?? '' };
+    return { kind: 'deny', reason: blockedReason(name, exec.agent) };
 }
 /** 生成可以直接挂到 `ctx.on('tools/pre-execute')` 的监听器。 */
 export function createPreExecuteListener(deps, log) {

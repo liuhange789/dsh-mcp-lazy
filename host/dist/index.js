@@ -57,10 +57,8 @@ export async function apply(ctx, pluginConfig) {
     const sessions = new SessionStateStore();
     const visibility = new ToolVisibilityController({ tools, coreTools, sessions, log });
     // 1) 闸门：未加载的 MCP 工具调用直接拒绝，并给出下一步指令。
-    ctx.on('tools/pre-execute', ((exec, next) => {
-        const listener = createPreExecuteListener({ enabled: true, coreTools, sessions }, log);
-        return listener(exec, next);
-    }));
+    const preExecute = createPreExecuteListener({ enabled: true, coreTools, sessions }, log);
+    ctx.on('tools/pre-execute', preExecute);
     // 2) 会话开始就定一次型，避免第一个请求多带一整轮定义。
     ctx.on('agent/session-start', ((payload) => {
         if (payload.source === 'clear') {
