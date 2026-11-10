@@ -1,6 +1,6 @@
 {
   "name": "@liuhange/dsh-mcp-lazy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP 工具的按需加载插件 — 默认只保留核心 MCP 工具，其余定义从本次会话的工具列表中移除，模型需要时用 lazy_load_tool 现场装载",
   "author": "liuhange789",
   "license": "MIT",
